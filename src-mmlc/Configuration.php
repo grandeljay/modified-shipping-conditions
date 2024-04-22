@@ -10,6 +10,10 @@ class Configuration
         $belt_sizes_decoded = html_entity_decode($belt_sizes_value);
         $belt_sizes         = json_decode($belt_sizes_decoded, true);
 
+        if (null === $belt_sizes) {
+            return [];
+        }
+
         return $belt_sizes;
     }
 }
