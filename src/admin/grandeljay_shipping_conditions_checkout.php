@@ -38,10 +38,6 @@ foreach ($_POST as $key => $value) {
     }
 }
 
-echo '<pre>';
-var_dump($belt_sizes);
-echo '</pre>';
-
 \xtc_db_query(
     \sprintf(
         'UPDATE `%s`
