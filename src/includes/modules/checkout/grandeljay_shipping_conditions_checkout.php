@@ -19,7 +19,7 @@ use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
 class grandeljay_shipping_conditions_checkout extends StdModule
 {
-    public const VERSION     = '0.1.1';
+    public const VERSION     = '0.1.2';
     public array $properties = [];
 
     public static function beltSize(string $value, string $option): string
