@@ -27,6 +27,11 @@ class grandeljay_shipping_conditions_checkout extends StdModule
         return ConfigurationField::beltSize($value, $option);
     }
 
+    public static function maxLength(string $value, string $option): string
+    {
+        return ConfigurationField::maxLength($value, $option);
+    }
+
     public function __construct()
     {
         parent::__construct(Constants::MODULE_NAME);
@@ -81,15 +86,22 @@ class grandeljay_shipping_conditions_checkout extends StdModule
 
     public function unallowed_shipping_modules(array $unallowed_modules): array
     {
-        $products   = $_SESSION['cart']->get_products();
-        $belt_sizes = array_filter(
+        $products    = $_SESSION['cart']->get_products();
+        $belt_sizes  = array_filter(
             Configuration::getBeltSizes(),
             function (array $belt_size) {
                 return $belt_size['enabled'];
             }
         );
+        $max_lengths = array_filter(
+            Configuration::getMaxLengths(),
+            function (array $max_length) {
+                return $max_length['enabled'];
+            }
+        );
 
         foreach ($products as $product) {
+            /** Belt size */
             $measurement_longest = max($product['length'], $product['width'], $product['height']);
             $measurement_set     = $measurement_longest > 0;
 
@@ -101,6 +113,19 @@ class grandeljay_shipping_conditions_checkout extends StdModule
 
             foreach ($belt_sizes as $shipping_method => $belt_size) {
                 if ($belt_size_calculated >= $belt_size['value']) {
+                    if (in_array($shipping_method, $unallowed_modules, true)) {
+                        continue;
+                    }
+
+                    $unallowed_modules[] = $shipping_method;
+                }
+            }
+
+            /** Max length */
+            $measurement_longest = max($product['length'], $product['width'], $product['height']);
+
+            foreach ($max_lengths as $shipping_method => $max_length) {
+                if ($measurement_longest >= $max_length['value']) {
                     if (in_array($shipping_method, $unallowed_modules, true)) {
                         continue;
                     }

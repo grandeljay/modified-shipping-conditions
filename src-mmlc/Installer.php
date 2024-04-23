@@ -15,6 +15,14 @@ class Installer
             'setFunction' => grandeljay_shipping_conditions_checkout::class . '::beltSize(',
             'useFunction' => '',
         ],
+        [
+            'key'         => 'MAX_LENGTH',
+            'value'       => '',
+            'groupId'     => 6,
+            'sortOrder'   => 1,
+            'setFunction' => grandeljay_shipping_conditions_checkout::class . '::maxLength(',
+            'useFunction' => '',
+        ],
     ];
 
     public static function getConfigurationKeys(): array

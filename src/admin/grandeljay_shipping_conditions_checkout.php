@@ -51,6 +51,32 @@ foreach ($_POST as $key => $value) {
 /** */
 
 /**
+ * Update max length
+ */
+$max_length = [];
+
+foreach ($_POST as $key => $value) {
+    if (isset($value['max_length'])) {
+        $max_length[$key] = [
+            'enabled' => isset($value['max_length']['enabled']),
+            'value'   => $value['max_length']['value'],
+        ];
+    }
+}
+
+\xtc_db_query(
+    \sprintf(
+        'UPDATE `%s`
+            SET `configuration_value` = "%s"
+          WHERE `configuration_key`   = "%s"',
+        \TABLE_CONFIGURATION,
+        \htmlspecialchars(\json_encode($max_length), \ENT_QUOTES),
+        Constants::MODULE_NAME . '_MAX_LENGTH'
+    )
+);
+/** */
+
+/**
  * Redirect back to settings page
  */
 \xtc_redirect(
