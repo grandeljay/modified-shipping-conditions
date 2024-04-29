@@ -15,9 +15,9 @@ public function quote(string $method_id = ''): ?array
 {
     [...]
 
-    $surcharges = new Surcharges($quote);
+    $surcharges = new Surcharges('shippingmethod', $methods);
     $surcharges->setSurcharges();
-    $quote = $surcharges->getQuote();
+    $methods = $surcharges->getMethods();
 
     return $quote;
 }
