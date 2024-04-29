@@ -13,29 +13,31 @@ class Configuration
         return $module_shipping_installed;
     }
 
-    public static function getBeltSizes(): array
+    private static function getJson(string $key): array
     {
-        $belt_sizes_value   = constant(Constants::MODULE_NAME . '_BELT_SIZE');
-        $belt_sizes_decoded = html_entity_decode($belt_sizes_value);
-        $belt_sizes         = json_decode($belt_sizes_decoded, true);
+        $json_value   = constant(Constants::MODULE_CHECKOUT_NAME . '_' . $key);
+        $json_decoded = html_entity_decode($json_value);
+        $json         = json_decode($json_decoded, true);
 
-        if (null === $belt_sizes) {
+        if (null === $json) {
             return [];
         }
 
-        return $belt_sizes;
+        return $json;
+    }
+
+    public static function getBeltSizes(): array
+    {
+        return self::getJson('BELT_SIZE');
     }
 
     public static function getMaxLengths(): array
     {
-        $max_lengths_value   = constant(Constants::MODULE_NAME . '_MAX_LENGTH');
-        $max_lengths_decoded = html_entity_decode($max_lengths_value);
-        $max_lengths         = json_decode($max_lengths_decoded, true);
+        return self::getJson('MAX_LENGTH');
+    }
 
-        if (null === $max_lengths) {
-            return [];
-        }
-
-        return $max_lengths;
+    public static function getOversizes(): array
+    {
+        return self::getJson('OVERSIZE');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Grandeljay\ShippingConditions;
 
-if (\rth_is_module_disabled(Constants::MODULE_NAME)) {
+if (\rth_is_module_disabled(Constants::MODULE_CHECKOUT_NAME)) {
     return;
 }
 

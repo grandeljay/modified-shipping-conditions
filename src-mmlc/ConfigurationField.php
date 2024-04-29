@@ -11,12 +11,12 @@ class ConfigurationField
 
         ob_start();
         ?>
-        <details open>
+        <details>
             <summary>Maximales Gurtmaß</summary>
 
             <div class="module_entries">
-                <label>Versandart</label>
-                <label>Maximales Gurtmaß</label>
+                <label class="header">Versandart</label>
+                <label class="header">Maximales Gurtmaß</label>
 
                 <?php foreach ($module_shipping_installed as $module_base_name) {?>
                     <?php
@@ -57,12 +57,12 @@ class ConfigurationField
 
         ob_start();
         ?>
-        <details open>
+        <details>
             <summary>Maximal Länge</summary>
 
             <div class="module_entries">
-                <label>Versandart</label>
-                <label>Maximal Länge</label>
+                <label class="header">Versandart</label>
+                <label class="header">Maximal Länge</label>
 
                 <?php foreach ($module_shipping_installed as $module_base_name) {?>
                     <?php
@@ -87,6 +87,58 @@ class ConfigurationField
                     </label>
 
                     <input type="text" name="<?= $module_filename ?>[max_length][value]" value="<?= $value ?>">
+                <?php } ?>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
+
+    public static function oversize(string $value, string $option): string
+    {
+        $module_shipping_installed = Configuration::getInstalledShippingModules();
+        $oversizes                 = Configuration::getOversizes();
+
+        ob_start();
+        ?>
+        <details>
+            <summary>Überlängen</summary>
+
+            <div class="module_entries oversize">
+                <label class="header">Versandart</label>
+                <label class="header">Maximalgewicht</label>
+                <label class="header">Maximallänge</label>
+                <label class="header">Aufschlag</label>
+
+                <?php foreach ($module_shipping_installed as $module_base_name) {?>
+                    <?php
+                    $module_filename          = \pathinfo($module_base_name, \PATHINFO_FILENAME);
+                    $module_language_filepath = \sprintf(
+                        '%s/modules/shipping/%s',
+                        \DIR_FS_LANGUAGES . $_SESSION['language'],
+                        $module_base_name
+                    );
+
+                    require_once $module_language_filepath;
+
+                    $module_pretty_name = \constant('MODULE_SHIPPING_' . \strtoupper($module_filename) . '_TEXT_TITLE');
+
+                    $is_checked = isset($oversizes[$module_filename]['enabled']) && true === $oversizes[$module_filename]['enabled'];
+                    $checked    = $is_checked ? 'checked' : '';
+                    $kilogram   = $oversizes[$module_filename]['kilogram']  ?? '';
+                    $length     = $oversizes[$module_filename]['length']    ?? '';
+                    $surcharge  = $oversizes[$module_filename]['surcharge'] ?? '';
+                    ?>
+                    <label>
+                        <input type="checkbox" name="<?= $module_filename ?>[oversize][enabled]" <?= $checked ?>>
+                        <?= $module_pretty_name ?>
+                    </label>
+
+                    <input type="text" name="<?= $module_filename ?>[oversize][kilogram]"  value="<?= $kilogram ?>">
+                    <input type="text" name="<?= $module_filename ?>[oversize][length]"    value="<?= $length ?>">
+                    <input type="text" name="<?= $module_filename ?>[oversize][surcharge]" value="<?= $surcharge ?>">
                 <?php } ?>
             </div>
         </details>

@@ -8,5 +8,5 @@
  * @link https://github.com/bmewburn/vscode-intelephense/issues/1706#issuecomment-804843284
  */
 
-define('MODULE_SHIPPING_INSTALLED', '');
 define('FILENAME_MODULES', '');
+define('MODULE_SHIPPING_INSTALLED', '');

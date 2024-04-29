@@ -2,6 +2,27 @@
 
 Allows you to use define additional conditions and surcharges to your existing shipping methods.
 
+## Note
+
+**Shipping modules must be compatible for this module to work.** If you would like to add compatibility, all you need to do is add the following snippet to your shipping method's `quote` method:
+
+```php
+use Grandeljay\ShippingConditions\Surcharges;
+
+[...]
+
+public function quote(string $method_id = ''): ?array
+{
+    [...]
+
+    $surcharges = new Surcharges($quote);
+    $surcharges->setSurcharges();
+    $quote = $surcharges->getQuote();
+
+    return $quote;
+}
+```
+
 ## Features
 
 ### Update safe

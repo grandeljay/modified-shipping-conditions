@@ -28,10 +28,14 @@ details > summary {
     align-items: center;
 }
 
+.module_entries.oversize {
+    grid-template-columns: repeat(4, max-content);
+}
+
 .module_entries > label {
     user-select: none;
 }
 
-.module_entries > :is(label:nth-of-type(1), label:nth-of-type(2)) {
+.module_entries > label.header {
     font-weight: bolder;
 }

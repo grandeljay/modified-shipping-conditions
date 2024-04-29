@@ -9,7 +9,7 @@ require 'includes/application_top.php';
 /**
  * Update module status
  */
-$module_status_key   = Constants::MODULE_NAME . '_STATUS';
+$module_status_key   = Constants::MODULE_CHECKOUT_NAME . '_STATUS';
 $module_status_value = $_POST['configuration'][$module_status_key];
 
 \xtc_db_query(
@@ -45,7 +45,7 @@ foreach ($_POST as $key => $value) {
           WHERE `configuration_key`   = "%s"',
         \TABLE_CONFIGURATION,
         \htmlspecialchars(\json_encode($belt_sizes), \ENT_QUOTES),
-        Constants::MODULE_NAME . '_BELT_SIZE'
+        Constants::MODULE_CHECKOUT_NAME . '_BELT_SIZE'
     )
 );
 /** */
@@ -71,7 +71,35 @@ foreach ($_POST as $key => $value) {
           WHERE `configuration_key`   = "%s"',
         \TABLE_CONFIGURATION,
         \htmlspecialchars(\json_encode($max_length), \ENT_QUOTES),
-        Constants::MODULE_NAME . '_MAX_LENGTH'
+        Constants::MODULE_CHECKOUT_NAME . '_MAX_LENGTH'
+    )
+);
+/** */
+
+/**
+ * Oversize
+ */
+$oversize = [];
+
+foreach ($_POST as $key => $value) {
+    if (isset($value['oversize'])) {
+        $oversize[$key] = [
+            'enabled'   => isset($value['oversize']['enabled']),
+            'kilogram'  => $value['oversize']['kilogram'],
+            'length'    => $value['oversize']['length'],
+            'surcharge' => $value['oversize']['surcharge'],
+        ];
+    }
+}
+
+\xtc_db_query(
+    \sprintf(
+        'UPDATE `%s`
+            SET `configuration_value` = "%s"
+          WHERE `configuration_key`   = "%s"',
+        \TABLE_CONFIGURATION,
+        \htmlspecialchars(\json_encode($oversize), \ENT_QUOTES),
+        Constants::MODULE_CHECKOUT_NAME . '_OVERSIZE'
     )
 );
 /** */

@@ -19,7 +19,7 @@ use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 
 class grandeljay_shipping_conditions_checkout extends StdModule
 {
-    public const VERSION     = '0.2.0';
+    public const VERSION     = Constants::MODULE_VERSION;
     public array $properties = [];
 
     public static function beltSize(string $value, string $option): string
@@ -32,12 +32,17 @@ class grandeljay_shipping_conditions_checkout extends StdModule
         return ConfigurationField::maxLength($value, $option);
     }
 
+    public static function oversize(string $value, string $option): string
+    {
+        return ConfigurationField::oversize($value, $option);
+    }
+
     public function __construct()
     {
-        parent::__construct(Constants::MODULE_NAME);
+        parent::__construct(Constants::MODULE_CHECKOUT_NAME);
 
         $this->checkForUpdate(true);
-        $this->properties['form_edit'] = \xtc_draw_form(self::class, Constants::MODULE_FILENAME);
+        $this->properties['form_edit'] = \xtc_draw_form(self::class, Constants::MODULE_CHECKOUT_FILENAME);
 
         foreach (Installer::getConfigurationKeys() as $field) {
             $this->addKey($field['key']);
