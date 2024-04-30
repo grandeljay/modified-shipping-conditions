@@ -15,7 +15,13 @@ class Configuration
 
     private static function getJson(string $key): array
     {
-        $json_value   = constant(Constants::MODULE_CHECKOUT_NAME . '_' . $key);
+        $constant = Constants::MODULE_CHECKOUT_NAME . '_' . $key;
+
+        if (!\defined($constant)) {
+            return [];
+        }
+
+        $json_value   = constant($constant);
         $json_decoded = html_entity_decode($json_value);
         $json         = json_decode($json_decoded, true);
 
