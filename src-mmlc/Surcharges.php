@@ -41,9 +41,9 @@ class Surcharges
                 $product_weight               = $product['weight'];
                 $product_weight_maximum       = $oversizes[$shipping_method]['kilogram'];
 
-                $surcharge = $oversizes[$shipping_method]['surcharge'];
+                $surcharge = \filter_var($oversizes[$shipping_method]['surcharge'], \FILTER_SANITIZE_NUMBER_FLOAT);
 
-                if ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum) {
+                if ($surcharge && ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum)) {
                     $method['cost']          += $surcharge;
                     $method['calculations'][] = [
                         'name'  => 'oversized',
