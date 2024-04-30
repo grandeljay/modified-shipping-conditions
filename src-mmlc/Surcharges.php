@@ -53,7 +53,8 @@ class Surcharges
                     $method['calculations'][] = [
                         'name'  => 'oversized',
                         'item'  => sprintf(
-                            'Oversized product',
+                            'Oversized product (%s)',
+                            $product['model'] ?? ''
                         ),
                         'costs' => $surcharge,
                     ];
