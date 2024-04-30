@@ -40,7 +40,7 @@ class ConfigurationField
                         <?= $module_pretty_name ?>
                     </label>
 
-                    <input type="text" name="<?= $module_filename ?>[belt_size][value]" value="<?= $value ?>">
+                    <input type="text" name="<?= $module_filename ?>[belt_size][value]" value="<?= $value ?>" pattern="\d+">
                 <?php } ?>
             </div>
         </details>
@@ -86,7 +86,7 @@ class ConfigurationField
                         <?= $module_pretty_name ?>
                     </label>
 
-                    <input type="text" name="<?= $module_filename ?>[max_length][value]" value="<?= $value ?>">
+                    <input type="text" name="<?= $module_filename ?>[max_length][value]" value="<?= $value ?>" pattern="\d+">
                 <?php } ?>
             </div>
         </details>
@@ -136,9 +136,9 @@ class ConfigurationField
                         <?= $module_pretty_name ?>
                     </label>
 
-                    <input type="text" name="<?= $module_filename ?>[oversize][kilogram]"  value="<?= $kilogram ?>">
-                    <input type="text" name="<?= $module_filename ?>[oversize][length]"    value="<?= $length ?>">
-                    <input type="text" name="<?= $module_filename ?>[oversize][surcharge]" value="<?= $surcharge ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][kilogram]"  value="<?= $kilogram ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][length]"    value="<?= $length ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][surcharge]" value="<?= $surcharge ?>">
                 <?php } ?>
             </div>
         </details>

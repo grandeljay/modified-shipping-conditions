@@ -37,11 +37,12 @@ class Surcharges
         foreach ($products as $product) {
             foreach ($this->methods as &$method) {
                 $product_longest_side         = max($product['length'], $product['width'], $product['height']);
-                $product_longest_side_maximum = $oversizes[$shipping_method]['length'];
+                $product_longest_side_maximum = \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
                 $product_weight               = $product['weight'];
-                $product_weight_maximum       = $oversizes[$shipping_method]['kilogram'];
+                $product_weight_maximum       = \filter_var($oversizes[$shipping_method]['kilogram'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
+                ;
 
-                $surcharge = \filter_var($oversizes[$shipping_method]['surcharge'], \FILTER_SANITIZE_NUMBER_FLOAT);
+                $surcharge = \filter_var($oversizes[$shipping_method]['surcharge'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
 
                 if ($surcharge && ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum)) {
                     $method['cost']          += $surcharge;
