@@ -10,6 +10,10 @@ class Surcharges
 
     public function setSurcharges(): void
     {
+        if (\rth_is_module_disabled(Constants::MODULE_CHECKOUT_NAME)) {
+            return;
+        }
+
         $this->setSurchargeOversize();
     }
 
