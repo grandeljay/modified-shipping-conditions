@@ -15,9 +15,17 @@ public function quote(string $method_id = ''): ?array
 {
     [...]
 
-    $surcharges = new Surcharges('shippingmethod', $methods);
-    $surcharges->setSurcharges();
-    $methods = $surcharges->getMethods();
+    if (\class_exists('Grandeljay\ShippingConditions\Surcharges')) {
+        $surcharges = new \Grandeljay\ShippingConditions\Surcharges(
+            \grandeljayups::class,            /** Class name of the shipping module */
+            $methods                          /** The shipping module's methods */
+        );
+        $surcharges->setSurcharges();         /** This won't do anything if the module is disabled */
+
+        $methods = $surcharges->getMethods(); /** Return the methods, with added surcharges */
+    }
+
+    [...]
 
     return $quote;
 }
