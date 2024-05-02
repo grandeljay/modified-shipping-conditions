@@ -40,21 +40,45 @@ class Surcharges
 
         foreach ($products as $product) {
             foreach ($this->methods as &$method) {
+                /**
+                 * Weight
+                 */
+                $product_weight         = $product['weight'];
+                $product_weight_maximum = \filter_var($oversizes[$shipping_method]['kilogram'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
+
+                if (0 === $product_weight || 0 === $product_weight_maximum) {
+                    break;
+                }
+
+                /**
+                 * Length
+                 */
                 $product_longest_side         = max($product['length'], $product['width'], $product['height']);
-                $product_longest_side_maximum = \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
-                $product_weight               = $product['weight'];
-                $product_weight_maximum       = \filter_var($oversizes[$shipping_method]['kilogram'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
-                ;
+                $product_longest_side_maximum = \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
 
-                $surcharge = \filter_var($oversizes[$shipping_method]['surcharge'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT);
+                if (0 === $product_longest_side || 0 === $product_longest_side_maximum) {
+                    break;
+                }
 
-                if ($surcharge && ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum)) {
+                /**
+                 * Surcharge
+                 */
+                $surcharge = \filter_var($oversizes[$shipping_method]['surcharge'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
+
+                if (0 === $surcharge) {
+                    break;
+                }
+
+                /**
+                 * Calculate
+                 */
+                if ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum) {
                     $method['cost']          += $surcharge;
                     $method['calculations'][] = [
                         'name'  => 'oversized',
                         'item'  => sprintf(
                             'Oversized product (%s)',
-                            $product['model'] ?? ''
+                            $product['model'] ?? 'Unknown'
                         ),
                         'costs' => $surcharge,
                     ];
