@@ -19,6 +19,9 @@ $translations->add('MAX_LENGTH_DESC', 'Regardless of belt dimensions, weights (i
 
 $translations->add('OVERSIZE_TITLE', 'Überlänge');
 $translations->add('OVERSIZE_DESC', 'Zuschlag für Handhabung sollte ab X kg oder Y cm Länge einmalig anfallen.');
+
+$translations->add('BULK_CHARGE_TITLE', 'Sperrzuschlag');
+$translations->add('BULK_CHARGE_DESC', 'Zuschlag für die Zweitlängste Seite');
 /** */
 
 $translations->define();

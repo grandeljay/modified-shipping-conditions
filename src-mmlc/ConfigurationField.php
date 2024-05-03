@@ -147,4 +147,59 @@ class ConfigurationField
 
         return $html;
     }
+
+    public static function bulkCharge(string $value, string $option): string
+    {
+        $module_shipping_installed = Configuration::getInstalledShippingModules();
+        $bulk_charges              = Configuration::getBulkCharge();
+
+        ob_start();
+        ?>
+        <details>
+            <summary>Sperrzuschlag</summary>
+
+            <div class="module_entries bulk_charge">
+                <label class="header">Versandart</label>
+                <label class="header">Länge</label>
+                <label class="header">Breite</label>
+                <label class="header">Höhe</label>
+                <label class="header">Aufschlag</label>
+
+                <?php foreach ($module_shipping_installed as $module_base_name) {?>
+                    <?php
+                    $module_filename          = \pathinfo($module_base_name, \PATHINFO_FILENAME);
+                    $module_language_filepath = \sprintf(
+                        '%s/modules/shipping/%s',
+                        \DIR_FS_LANGUAGES . $_SESSION['language'],
+                        $module_base_name
+                    );
+
+                    require_once $module_language_filepath;
+
+                    $module_pretty_name = \constant('MODULE_SHIPPING_' . \strtoupper($module_filename) . '_TEXT_TITLE');
+
+                    $is_checked = isset($bulk_charges[$module_filename]['enabled']) && true === $bulk_charges[$module_filename]['enabled'];
+                    $checked    = $is_checked ? 'checked' : '';
+                    $length     = $bulk_charges[$module_filename]['length']    ?? '';
+                    $width      = $bulk_charges[$module_filename]['width']     ?? '';
+                    $height     = $bulk_charges[$module_filename]['height']    ?? '';
+                    $surcharge  = $bulk_charges[$module_filename]['surcharge'] ?? '';
+                    ?>
+                    <label>
+                        <input type="checkbox" name="<?= $module_filename ?>[bulk_charge][enabled]" <?= $checked ?>>
+                        <?= $module_pretty_name ?>
+                    </label>
+
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[bulk_charge][length]"    value="<?= $length ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[bulk_charge][width]"     value="<?= $width ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[bulk_charge][height]"    value="<?= $height ?>">
+                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[bulk_charge][surcharge]" value="<?= $surcharge ?>">
+                <?php } ?>
+            </div>
+        </details>
+        <?php
+        $html = ob_get_clean();
+
+        return $html;
+    }
 }

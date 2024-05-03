@@ -4,6 +4,8 @@ namespace Grandeljay\ShippingConditions;
 
 class Surcharges
 {
+    private array $products_with_surcharge;
+
     public function __construct(private string $shipping_method, private array $methods)
     {
     }
@@ -14,7 +16,10 @@ class Surcharges
             return;
         }
 
+        $this->products_with_surcharge = [];
+
         $this->setSurchargeOversize();
+        $this->setSurchargeBulkCharge();
     }
 
     /**
@@ -38,7 +43,11 @@ class Surcharges
             return;
         }
 
-        foreach ($products as $product) {
+        foreach ($products as &$product) {
+            if (\in_array($product, $this->products_with_surcharge)) {
+                continue;
+            }
+
             foreach ($this->methods as &$method) {
                 /**
                  * Weight
@@ -82,6 +91,63 @@ class Surcharges
                         ),
                         'costs' => $surcharge,
                     ];
+
+                    $this->products_with_surcharge[] = $product;
+                }
+            }
+        }
+    }
+
+    private function setSurchargeBulkCharge(): void
+    {
+        global $order;
+
+        $products = $order->products;
+
+        $bulk_charges    = Configuration::getBulkCharge();
+        $shipping_method = $this->shipping_method;
+        $enabled_config  = $bulk_charges[$shipping_method]['enabled'] ?? false;
+
+        if (true !== $enabled_config) {
+            return;
+        }
+
+        $measurements = [
+            'length' => \filter_var($bulk_charges[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0,
+            'width'  => \filter_var($bulk_charges[$shipping_method]['width']  ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0,
+            'height' => \filter_var($bulk_charges[$shipping_method]['height'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0,
+        ];
+        $surcharge    = \filter_var($bulk_charges[$shipping_method]['surcharge'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
+
+        \arsort($measurements, \SORT_NUMERIC);
+
+        $measurement_second_longest_key   = \array_keys($measurements)[1];
+        $measurement_second_longest_value = \array_values($measurements)[1];
+
+        if (0 === $measurement_second_longest_value) {
+            return;
+        }
+
+        foreach ($products as &$product) {
+            if (\in_array($product, $this->products_with_surcharge)) {
+                continue;
+            }
+
+            foreach ($this->methods as &$method) {
+                if ($product[$measurement_second_longest_key] > $measurement_second_longest_value) {
+                    $method['cost']          += $surcharge;
+                    $method['calculations'][] = [
+                        'name'  => 'bulk_charge',
+                        'item'  => sprintf(
+                            'Bulk charge (%s)',
+                            $product['model'] ?? 'Unknown'
+                        ),
+                        'costs' => $surcharge,
+                    ];
+
+                    $this->products_with_surcharge[] = $product;
+                } else {
+                    break;
                 }
             }
         }

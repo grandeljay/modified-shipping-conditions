@@ -27,9 +27,11 @@ details > summary {
     gap: 0.2rem 0.8rem;
     align-items: center;
 }
-
 .module_entries.oversize {
     grid-template-columns: repeat(4, max-content);
+}
+.module_entries.bulk_charge {
+    grid-template-columns: repeat(5, max-content);
 }
 
 .module_entries > label {

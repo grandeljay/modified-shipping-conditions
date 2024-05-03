@@ -31,6 +31,14 @@ class Installer
             'setFunction' => grandeljay_shipping_conditions_checkout::class . '::oversize(',
             'useFunction' => '',
         ],
+        [
+            'key'         => 'BULK_CHARGE',
+            'value'       => '',
+            'groupId'     => 6,
+            'sortOrder'   => 1,
+            'setFunction' => grandeljay_shipping_conditions_checkout::class . '::bulkCharge(',
+            'useFunction' => '',
+        ],
     ];
 
     public static function getConfigurationKeys(): array

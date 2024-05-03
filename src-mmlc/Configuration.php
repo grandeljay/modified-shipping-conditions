@@ -46,4 +46,9 @@ class Configuration
     {
         return self::getJson('OVERSIZE');
     }
+
+    public static function getBulkCharge(): array
+    {
+        return self::getJson('BULK_CHARGE');
+    }
 }

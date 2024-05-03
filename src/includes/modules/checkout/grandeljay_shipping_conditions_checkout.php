@@ -37,6 +37,11 @@ class grandeljay_shipping_conditions_checkout extends StdModule
         return ConfigurationField::oversize($value, $option);
     }
 
+    public static function bulkCharge(string $value, string $option): string
+    {
+        return ConfigurationField::bulkCharge($value, $option);
+    }
+
     public function __construct()
     {
         parent::__construct(Constants::MODULE_CHECKOUT_NAME);

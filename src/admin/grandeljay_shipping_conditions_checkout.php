@@ -105,6 +105,35 @@ foreach ($_POST as $key => $value) {
 /** */
 
 /**
+ * Bulk Charge
+ */
+$bulk_charge = [];
+
+foreach ($_POST as $key => $value) {
+    if (isset($value['bulk_charge'])) {
+        $bulk_charge[$key] = [
+            'enabled'   => isset($value['bulk_charge']['enabled']),
+            'length'    => $value['bulk_charge']['length'],
+            'width'     => $value['bulk_charge']['width'],
+            'height'    => $value['bulk_charge']['height'],
+            'surcharge' => $value['bulk_charge']['surcharge'],
+        ];
+    }
+}
+
+\xtc_db_query(
+    \sprintf(
+        'UPDATE `%s`
+            SET `configuration_value` = "%s"
+          WHERE `configuration_key`   = "%s"',
+        \TABLE_CONFIGURATION,
+        \htmlspecialchars(\json_encode($bulk_charge), \ENT_QUOTES),
+        Constants::MODULE_CHECKOUT_NAME . '_BULK_CHARGE'
+    )
+);
+/** */
+
+/**
  * Redirect back to settings page
  */
 \xtc_redirect(
