@@ -108,8 +108,8 @@ class ConfigurationField
 
             <div class="module_entries oversize">
                 <label class="header">Versandart</label>
-                <label class="header">Maximalgewicht</label>
-                <label class="header">Maximallänge</label>
+                <label class="header">Maximal Gewicht</label>
+                <label class="header">Maximal Länge</label>
                 <label class="header">Aufschlag</label>
 
                 <?php foreach ($module_shipping_installed as $module_base_name) {?>
