@@ -82,15 +82,19 @@ class Surcharges
                  * Calculate
                  */
                 if ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum) {
-                    $method['cost']          += $surcharge;
-                    $method['calculations'][] = [
-                        'name'  => 'oversized',
-                        'item'  => sprintf(
-                            'Oversized product (%s)',
-                            $product['model'] ?? 'Unknown'
-                        ),
-                        'costs' => $surcharge,
-                    ];
+                    $product_quantity = $product['quantity'] ?? 1;
+
+                    for ($quantity = 1; $quantity <= $product_quantity; $quantity++) {
+                        $method['cost']          += $surcharge;
+                        $method['calculations'][] = [
+                            'name'  => 'oversized',
+                            'item'  => sprintf(
+                                'Oversized product (%s)',
+                                $product['model'] ?? 'Unknown'
+                            ),
+                            'costs' => $surcharge,
+                        ];
+                    }
 
                     $this->products_with_surcharge[] = $product;
                 }
