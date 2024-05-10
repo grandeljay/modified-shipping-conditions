@@ -50,16 +50,6 @@ class Surcharges
 
             foreach ($this->methods as &$method) {
                 /**
-                 * Weight
-                 */
-                $product_weight         = $product['weight'];
-                $product_weight_maximum = \filter_var($oversizes[$shipping_method]['kilogram'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
-
-                if (0 === $product_weight || 0 === $product_weight_maximum) {
-                    break;
-                }
-
-                /**
                  * Length
                  */
                 $product_longest_side         = max($product['length'], $product['width'], $product['height']);
@@ -81,7 +71,7 @@ class Surcharges
                 /**
                  * Calculate
                  */
-                if ($product_longest_side >= $product_longest_side_maximum || $product_weight >= $product_weight_maximum) {
+                if ($product_longest_side >= $product_longest_side_maximum) {
                     $product_quantity = $product['quantity'] ?? 1;
 
                     for ($quantity = 1; $quantity <= $product_quantity; $quantity++) {

@@ -29,7 +29,7 @@ details > summary {
     align-items: center;
 }
 .module_entries.oversize {
-    grid-template-columns: max-content repeat(3, max-content);
+    grid-template-columns: max-content repeat(2, max-content);
 }
 .module_entries.bulk_charge {
     grid-template-columns: max-content repeat(4, 1fr);

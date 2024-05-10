@@ -108,7 +108,6 @@ class ConfigurationField
 
             <div class="module_entries oversize">
                 <label class="header">Versandart</label>
-                <label class="header">Maximal Gewicht</label>
                 <label class="header">Maximal Länge</label>
                 <label class="header">Aufschlag</label>
 
@@ -127,7 +126,6 @@ class ConfigurationField
 
                     $is_checked = isset($oversizes[$module_filename]['enabled']) && true === $oversizes[$module_filename]['enabled'];
                     $checked    = $is_checked ? 'checked' : '';
-                    $kilogram   = $oversizes[$module_filename]['kilogram']  ?? '';
                     $length     = $oversizes[$module_filename]['length']    ?? '';
                     $surcharge  = $oversizes[$module_filename]['surcharge'] ?? '';
                     ?>
@@ -136,7 +134,6 @@ class ConfigurationField
                         <?= $module_pretty_name ?>
                     </label>
 
-                    <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][kilogram]"  value="<?= $kilogram ?>">
                     <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][length]"    value="<?= $length ?>">
                     <input type="text" pattern="\d+" name="<?= $module_filename ?>[oversize][surcharge]" value="<?= $surcharge ?>">
                 <?php } ?>

@@ -85,7 +85,6 @@ foreach ($_POST as $key => $value) {
     if (isset($value['oversize'])) {
         $oversize[$key] = [
             'enabled'   => isset($value['oversize']['enabled']),
-            'kilogram'  => $value['oversize']['kilogram'],
             'length'    => $value['oversize']['length'],
             'surcharge' => $value['oversize']['surcharge'],
         ];
