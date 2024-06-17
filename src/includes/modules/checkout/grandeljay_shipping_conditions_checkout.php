@@ -112,14 +112,18 @@ class grandeljay_shipping_conditions_checkout extends StdModule
 
         foreach ($products as $product) {
             /** Belt size */
-            $measurement_longest = max($product['length'], $product['width'], $product['height']);
-            $measurement_set     = $measurement_longest > 0;
+            $measurements = [
+                $product['length'],
+                $product['width'],
+                $product['height'],
+            ];
+            rsort($measurements, SORT_NUMERIC);
 
-            if (true !== $measurement_set) {
-                continue;
-            }
+            $measurement_longest    = $measurements[0];
+            $measurement_shortest_1 = $measurements[1];
+            $measurement_shortest_2 = $measurements[2];
 
-            $belt_size_calculated = 2 * $product['height'] + 2 * $product['width'] + $measurement_longest;
+            $belt_size_calculated = $measurement_longest + 2 * $measurement_shortest_1 + 2 * $measurement_shortest_2;
 
             foreach ($belt_sizes as $shipping_method => $belt_size) {
                 if ($belt_size_calculated >= $belt_size['value']) {
