@@ -55,7 +55,20 @@ class Surcharges
                 $product_longest_side         = (int) \max($product['length'], $product['width'], $product['height']);
                 $product_longest_side_maximum = (int) \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
 
-                if (0 === $product_longest_side || 0 === $product_longest_side_maximum) {
+                if (0 === $product_longest_side) {
+                    $method['calculations'][] = [
+                        'name'  => 'longest_side_not_set',
+                        'item'  => \sprintf(
+                            'Longest side for product <code>%s</code> is not set.',
+                            $product['model'] ?? 'Unknown'
+                        ),
+                        'costs' => 0,
+                    ];
+
+                    break;
+                }
+
+                if (0 === $product_longest_side_maximum) {
                     break;
                 }
 
