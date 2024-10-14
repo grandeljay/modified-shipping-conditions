@@ -20,6 +20,7 @@ class Surcharges
 
         $this->setSurchargeOversize();
         $this->setSurchargeBulkCharge();
+        $this->setSurchargeRoundUp();
     }
 
     /**
@@ -157,6 +158,39 @@ class Surcharges
                     break;
                 }
             }
+        }
+    }
+
+    private function setSurchargeRoundUp(): void
+    {
+        foreach ($this->methods as &$method) {
+            $costs_whole    = \floor($method['cost']);
+            $costs_decimals = $method['cost'] - $costs_whole;
+
+            $round_up_to     = 0.9;
+            $round_up_amount = 0;
+
+            if ($costs_decimals = $round_up_to) {
+                continue;
+            }
+
+            if ($costs_decimals > $round_up_to) {
+                $round_up_amount = 1 - $costs_decimals + $round_up_to;
+            }
+
+            if ($costs_decimals < $round_up_to) {
+                $round_up_amount = $round_up_to - $costs_decimals;
+            }
+
+            $method['cost']          += $round_up_amount;
+            $method['calculations'][] = [
+                'name'  => 'round_up',
+                'item'  => \sprintf(
+                    'Rounding up to <code>%s</code>',
+                    $round_up_amount
+                ),
+                'costs' => $round_up_amount,
+            ];
         }
     }
 
