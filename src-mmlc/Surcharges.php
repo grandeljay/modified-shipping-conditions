@@ -52,8 +52,8 @@ class Surcharges
                 /**
                  * Length
                  */
-                $product_longest_side         = max($product['length'], $product['width'], $product['height']);
-                $product_longest_side_maximum = \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
+                $product_longest_side         = (int) \max($product['length'], $product['width'], $product['height']);
+                $product_longest_side_maximum = (int) \filter_var($oversizes[$shipping_method]['length'] ?? 0, \FILTER_SANITIZE_NUMBER_FLOAT) ?: 0;
 
                 if (0 === $product_longest_side || 0 === $product_longest_side_maximum) {
                     break;
