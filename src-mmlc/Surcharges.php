@@ -78,8 +78,8 @@ class Surcharges
                         $method['cost']          += $surcharge;
                         $method['calculations'][] = [
                             'name'  => 'oversized',
-                            'item'  => sprintf(
-                                'Oversized product (%s)',
+                            'item'  => \sprintf(
+                                'Oversized product (<code>%s</code>)',
                                 $product['model'] ?? 'Unknown'
                             ),
                             'costs' => $surcharge,
@@ -132,8 +132,8 @@ class Surcharges
                     $method['cost']          += $surcharge;
                     $method['calculations'][] = [
                         'name'  => 'bulk_charge',
-                        'item'  => sprintf(
-                            'Bulk charge (%s)',
+                        'item'  => \sprintf(
+                            'Bulk charge (<code>%s</code>)',
                             $product['model'] ?? 'Unknown'
                         ),
                         'costs' => $surcharge,
